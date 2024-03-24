@@ -5,23 +5,23 @@
 ## Установка
 
 1. Склонируйте репозиторий:
-```bash
-git clone https://github.com/Pu104ver/tree_menu.git
-```
+   ```bash
+   git clone https://github.com/Pu104ver/tree_menu.git
+   ```
 
 2. Перейдите в корневую директорию проекта (в этой директории расположен manage.py)
-```bash
-cd tree_menu
-```
-Если скопировали проект через гит, то нужно ввести эту команду дважды, чтобы оказаться в директории с manage.py
+   ```bash
+   cd tree_menu
+   ```
+   Если скопировали проект через гит, то нужно ввести эту команду дважды, чтобы оказаться в директории с manage.py
 
 3. Создайте виртуальное окружение:
-```base
-python -m venv venv
-```
+   ```base
+   python -m venv venv
+   ```
 
 4. Активируйте виртуальное окружение:
-   
+
    Для Linux/macOS
    ```bash
    source venv/bin/activate
@@ -32,53 +32,55 @@ python -m venv venv
    ```
 
 6. Установите зависимости:
-```bash
-pip install -r requirements.txt
-```
+   ```bash
+   pip install -r requirements.txt
+   ```
 
 6. Создайте файл .env в корневой директории проекта и заполните его данными (если требуется). Подробнее описал ниже.
 
-7. Создайте и примените миграции:
+7. Создайте миграции:
+   ```bash
+   python manage.py makemigrations
+   ```
 
-```bash
-python manage.py makemigrations
-```
-```bash
-python manage.py migrate
-```
-Если по какой-то причине модель Меню не оказалась мигрирована, то напишите:
-```bash
-python manage.py makemigrations menu
-```
+   Если по какой-то причине модель Меню не оказалась мигрирована, то напишите:
+   ```bash
+   python manage.py makemigrations menu
+   ```
+
+   После чего примените миграции:
+   ```bash
+   python manage.py migrate
+   ```
 
 8. Создайте супер-пользователя:
-```base
+   ```base
    python manage.py createsuperuser
-```
+   ```
 
 9. Запустите сервер:
-```bash
-python manage.py runserver
-```
+   ```bash
+   python manage.py runserver
+   ```
 
 ## Использование
 
 1. Если у вас нет установленного PostgreSQL или вы не хотите его использовать, то в файле config/settings.py закомментируйте текущую переменную DATABASES, исопльзующую 'ENGINE': 'django.db.backends.postgresql', и вставьте/расскоментурйте выше следующий код:
-```bash
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-```
-После этого примените миграции:
-```bash
-python manage.py migrations
-```
-```bash
-python manage.py migrate
-```
+   ```bash
+   DATABASES = {
+       'default': {
+           'ENGINE': 'django.db.backends.sqlite3',
+           'NAME': BASE_DIR / 'db.sqlite3',
+       }
+   }
+   ```
+   После этого примените миграции:
+   ```bash
+   python manage.py makemigrations
+   ```
+   ```bash
+   python manage.py migrate
+   ```
 2. Создайте меню в админ-панели Django, используя модель `MenuItem` (http://127.0.0.1:8000/admin).
 3. Добавьте еще больше меню.
 4. Перезапустите страницу (http://127.0.0.1:8000/menu)
@@ -99,4 +101,5 @@ DB_USER=YOUR_DB_USER
 DB_PASSWORD=YOUR_DB_PASSWORD
 ```
 
-SECRET_KEY для файла .env можно сгенерировать на сайте https://djecrety.ir/ (Пример ключа: _9*t^han!8@5516c3ru-aj7h%*-^2u(*set4etfq0(pe+%w@!p)
+SECRET_KEY для файла .env можно сгенерировать на сайте https://djecrety.ir/ 
+Пример ключа: 3rjw8j#3-+fw1rmo01!rzdlboy^t*@e(se$@=lu-nh+(8azh=j
