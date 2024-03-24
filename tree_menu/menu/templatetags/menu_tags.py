@@ -38,8 +38,9 @@ def draw_menu(menu_name):
             'expanded_menu_html': 'Ошибка загрузки меню'
         }
 
-    def generate_menu_html(expand_items, children_list: list, main_menu: MenuItem):
+    def generate_menu_html(expand_items: dict, children_list: list, main_menu: MenuItem):
         menu_html = "<ul class='nav-tabs'>"
+
         if expand_items:
             for item, item_children in expand_items.items():
                 if item == main_menu:
@@ -56,10 +57,10 @@ def draw_menu(menu_name):
                     menu_html += generate_menu_html(item_children, children_list, main_menu)
                 menu_html += "</li>"
         else:
+            menu_html += (f"<li class='nav-item'>"
+                          f"<a class='nav-link' href='{main_menu.url}'>{main_menu.title}∇</a></li>")
             if children_list:
                 if main_menu:
-                    menu_html += (f"<li class='nav-item'>"
-                                  f"<a class='nav-link' href='{main_menu.url}'>{main_menu.title}∇</a></li>")
                     menu_html += "<ul class='nav flex-column ml-3'>"
                     for child in children_list:
                         menu_html += (f"<li class='nav-item'>"
@@ -69,7 +70,10 @@ def draw_menu(menu_name):
                     menu_html += "<li class='nav-item'>Не удалось обработать переданное меню</li>"
 
             else:
-                menu_html += "<li>Нет доступных пунктов меню</li>"
+                menu_html += "<ul class='nav flex-column ml-3'>"
+                menu_html += f"<li>Нет доступных пунктов меню для <a href='{main_menu.url}'>{main_menu.title}</a></li>"
+                menu_html += "</ul>"
+
         menu_html += "</ul>"
         return menu_html
 
