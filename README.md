@@ -13,6 +13,7 @@ git clone https://github.com/Pu104ver/tree_menu.git
 ```bash
 cd tree_menu
 ```
+Если скопировали проект через гит, то нужно ввести эту команду дважды, чтобы оказаться в директории с manage.py
 
 3. Создайте виртуальное окружение:
 ```base
@@ -35,12 +36,14 @@ python -m venv venv
 pip install -r requirements.txt
 ```
 
-6. Создайте файл .env в корневой директории проекта и заполните его данными (если требуется).
+6. Создайте файл .env в корневой директории проекта и заполните его данными (если требуется). Подробнее описал ниже.
 
 7. Создайте и примените миграции:
 
 ```bash
 python manage.py makemigrations
+```
+```bash
 python manage.py migrate
 ```
 
@@ -56,7 +59,7 @@ python manage.py runserver
 
 ## Использование
 
-1. Если у вас нет установленного PostgreSQL, то в файле config/settings.py закомментируйте текущую переменную DATABASES, исопльзующую 'ENGINE': 'django.db.backends.postgresql', и расскоментурйте/вставьте следующий код:
+1. Если у вас нет установленного PostgreSQL или вы не хотите его использовать, то в файле config/settings.py закомментируйте текущую переменную DATABASES, исопльзующую 'ENGINE': 'django.db.backends.postgresql', и вставьте/расскоментурйте выше следующий код:
 ```bash
 DATABASES = {
     'default': {
@@ -66,10 +69,13 @@ DATABASES = {
 }
 ```
 После этого примените миграции:
-```base
+```bash
+python manage.py migrations
+```
+```bash
 python manage.py migrate
 ```
-2. Создайте меню в админке Django, используя модель `MenuItem` (http://127.0.0.1:8000/admin).
+2. Создайте меню в админ-панели Django, используя модель `MenuItem` (http://127.0.0.1:8000/admin).
 3. Добавьте еще больше меню.
 4. Перезапустите страницу (http://127.0.0.1:8000/menu)
 5. Вы увидите древовидное меню в соотвествии с указанной иерархией при создании.
@@ -80,7 +86,6 @@ python manage.py migrate
 - Поддерживает множество меню на одной странице.
 - Активный пункт меню определяется автоматически исходя из URL текущей страницы.
 - Пункты меню сортируюся по заголовокам.
-- SECRET_KEY для файла .env можно сгенерировать на сайте https://djecrety.ir/ (Пример ключа: _9*t^han!8@5516c3ru-aj7h%*-^2u(*set4etfq0(pe+%w@!p)
 
 ## Пример .env файла:
 ```bash
@@ -89,3 +94,5 @@ DB_NAME=YOUR_DB_NAME
 DB_USER=YOUR_DB_USER
 DB_PASSWORD=YOUR_DB_PASSWORD
 ```
+
+SECRET_KEY для файла .env можно сгенерировать на сайте https://djecrety.ir/ (Пример ключа: _9*t^han!8@5516c3ru-aj7h%*-^2u(*set4etfq0(pe+%w@!p)
