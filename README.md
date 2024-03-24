@@ -1,6 +1,6 @@
 # Древовидное меню на Django
 
-Этот проект представляет собой простое приложение для Django, которое реализует древовидное меню согласно требованиям задания.
+Этот проект представляет собой простое приложение для Django, которое реализует древовидное меню.
 
 ## Установка
 
@@ -82,7 +82,9 @@ python manage.py migrate
 - SECRET_KEY для файла .env можно сгенерировать на сайте https://djecrety.ir/ (Пример ключа: _9*t^han!8@5516c3ru-aj7h%*-^2u(*set4etfq0(pe+%w@!p)
 
 ## Пример .env файла:
+```bash
 SECRET_KEY=YOUR_DJANGO_SECRET_KEY
 DB_NAME=YOUR_DB_NAME
 DB_USER=YOUR_DB_USER
 DB_PASSWORD=YOUR_DB_PASSWORD
+```
