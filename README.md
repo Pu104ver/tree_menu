@@ -46,6 +46,10 @@ python manage.py makemigrations
 ```bash
 python manage.py migrate
 ```
+Если по какой-то причине модель Меню не оказалась мигрирована, то напишите:
+```bash
+python manage.py makemigrations menu
+```
 
 8. Создайте супер-пользователя:
 ```base
