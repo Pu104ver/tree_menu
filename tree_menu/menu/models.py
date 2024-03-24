@@ -1,3 +1,4 @@
+from django.core.cache import cache
 from django.db import models
 
 
@@ -9,6 +10,18 @@ class MenuItem(models.Model):
 
     @staticmethod
     def check_for_menu(menu_dict: dict, main_menu: 'MenuItem') -> bool:
+        """
+        Проверяет, содержится ли главное меню в словаре меню.
+
+        Args:
+            menu_dict (dict): Словарь меню.
+            main_menu (MenuItem): Главное меню для проверки.
+
+        Returns:
+            bool: True, если главное меню содержится в словаре, иначе False.
+        """
+        if not main_menu:
+            return False
         if main_menu in menu_dict:
             return True
         else:
@@ -18,29 +31,59 @@ class MenuItem(models.Model):
                         return True
         return False
 
-    def get_children(self) -> list['MenuItem']:
-        # children: List['MenuItem'] = list(MenuItem.objects.filter(parent=self))
-        children = list(MenuItem.objects.filter(parent=self).order_by('menu_name'))
+    def get_children(self, first=False, main_menu=None, all_children=False) -> dict:
+        """
+        Получает дочерние элементы текущего меню.
 
-        return children
+        Args:
+            first (bool): Флаг, указывающий, нужно ли получить только первого ребенка (для ограничения вывода потомков).
+            main_menu (MenuItem): Главное меню.
+            all_children (bool): Флаг, указывающий, нужно ли получить всех потомков.
 
-    def get_all_children(self, main_menu=None) -> dict:
+        Returns:
+            dict:
+                Словарь дочерних элементов текущего меню:
+                    Ключ - MenuItem (родительский элемент)
+                    Значение - dict: {
+                               Ключ - MenuItem (ребенок)
+                               Значение - dict: Словарь дочерних элементов ребенка текущего меню (потомки ребенка)
+                               }
+        """
+        cache_key = f"children_{self.pk}_{main_menu.pk if main_menu else 'None'}_{first}_{all_children}"
+        cached_children = cache.get(cache_key)
+        if cached_children:
+            return cached_children
+
+        children = list(self.children.all().order_by('title'))
         children_dict = {}
-        children = list(MenuItem.objects.filter(parent=self).order_by('menu_name'))
-        # children = list(MenuItem.objects.filter(parent=self))
+
+        if not children:
+            return children_dict
+
+        if not all_children:
+            children_dict = {child: None for child in children}
+            cache.set(cache_key, children_dict, timeout=600)
+            return children_dict
+
+        if first:
+            children = children[:1]
 
         for child in children:
-            if self.check_for_menu(children_dict, main_menu):
-                return children_dict
-
-
-            if main_menu and child == main_menu:
+            # Если найдено "главное меню" - заносим в словарь и переходим к другим "детям"
+            if child == main_menu:
                 children_dict[child] = {}
-                return children_dict
+                continue
 
-            child_children = child.get_all_children(main_menu)
+            # Если "главное меню" найдено, то поиск потомков прекращается для оставшихся детей прекращается
+            if self.check_for_menu(menu_dict=children_dict, main_menu=main_menu):
+                # Заносим оставшихся детей с пустым словарем потомков (для ограничения "развертываемости")
+                children_dict[child] = {}
+                continue
+
+            child_children = child.get_children(main_menu=main_menu, all_children=True)
             children_dict[child] = child_children
 
+        cache.set(cache_key, children_dict, timeout=600)
         return children_dict
 
     def __str__(self):

@@ -1,16 +1,21 @@
 from django.shortcuts import render
 from .models import MenuItem
 from .templatetags.menu_tags import draw_menu
+from django.core.cache import cache
 
 
 def homepage_view(request):
-    parent_items: list['MenuItem'] = MenuItem.objects.filter(parent__isnull=True)
-
+    parent_items = MenuItem.objects.filter(parent__isnull=True).order_by('title')
     parent_data = {}
 
     for parent_item in parent_items:
-        menu_data = draw_menu(parent_item.menu_name)
-        parent_data[parent_item] = menu_data
+        cached_data = cache.get(parent_item.menu_name)
+        if cached_data:
+            parent_data[parent_item] = cached_data
+        else:
+            menu_data = draw_menu(parent_item.menu_name)
+            parent_data[parent_item] = menu_data
+            cache.set(parent_item.menu_name, menu_data)
 
     context = {
         'parent_data': parent_data,
@@ -20,6 +25,4 @@ def homepage_view(request):
 
 
 def menu_view(request, menu_name):
-    menu_data = draw_menu(menu_name)
-    return render(request, 'menu/menu.html', {'menu_data': menu_data})
-    # menu_items = MenuItem.objects.filter(menu_name=menu_name)
+    return render(request, 'menu/menu.html', {'menu_name': menu_name})

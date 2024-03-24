@@ -1,1 +1,13 @@
-<ul><li><a href="/menu/test1">TestTitle1</a><ul><li><a href="/menu/test2">TestTitle2</a><ul><li><a href="/menu/test4">TestTitle4</a><ul><li><a href="/menu/test7">TestTitle7</a></li></ul></li><li><a href="/menu/test9">TestTitle9</a></li></ul></li><li><a href="/menu/test3">TestTitle3</a></li><li><a href="/menu/test5">TestTitle5</a><ul><li><a href="/menu/test8">TestTitle8</a></li></ul></li><li><a href="/menu/test10">TestTitle10</a><ul><li><a href="/menu/test14">TestTitle14</a></li></ul></li></ul></li></ul>
+{% extends 'base.html' %}
+{% load menu_tags %}
+
+{% block content %}
+    <h1 class="mt-3">Главная страница</h1>
+    {% if parent_data %}
+      {% for parent_item, menu_data in parent_data.items %}
+          {{ menu_data.menu_html | safe }}
+      {% endfor %}
+    {% else %}
+        <h1>Кажется, родителей не обнаружено...</h1>
+    {% endif %}
+{% endblock %}
