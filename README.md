@@ -16,7 +16,7 @@ cd tree_menu
 
 3. Создайте виртуальное окружение:
 ```base
-virtualenv venv
+python -m venv venv
 ```
 
 4. Активируйте виртуальное окружение:
