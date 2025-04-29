@@ -16,7 +16,7 @@
 1. **Клонируй репозиторий:**
 
    ```bash
-   git clone https://github.com/username/repo.git
+   git clone https://github.com/Pu104ver/tree_menu.git
    cd repo
    ```
 2. **Создай `.env` файл с параметрами, указанными в .env_example, например:**
