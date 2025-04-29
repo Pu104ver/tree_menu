@@ -1,0 +1,9 @@
+POSTGRES_DB=tree_menu
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_HOST=db
+POSTGRES_PORT=5432
+
+DEBUG="True"
+
+SECRET_KEY="django-insecure-g3==_4_6cagmn5v3cuc$=wjby!f-#4zh$)6qi+($0&yn$4t&=s"

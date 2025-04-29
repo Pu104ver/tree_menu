@@ -1,0 +1,14 @@
+<li>
+    <a href="{{ node.item.get_absolute_url }}" 
+       {% if node.item.id in active_path %}class="active"{% endif %}>
+        {{ node.item.title }}
+    </a>
+
+    {% if node.children %}
+        <ul {% if node.item.id not in active_path %}style="display:none"{% endif %}>
+            {% for child in node.children %}
+                {% include "menu_app/menu_node.html" with node=child active_path=active_path %}
+            {% endfor %}
+        </ul>
+    {% endif %}
+</li>

@@ -1,0 +1,30 @@
+{% load static %}
+{% load menu_tags %}
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <title>{% block title %}Главная{% endblock %}</title>
+</head>
+
+<body>
+
+    <header>
+        <h2>Главное меню</h2>
+        {% draw_menu 'main_menu' %}
+    </header>
+    
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    
+    <footer>
+        <h3>Меню подвала</h3>
+        {% draw_menu 'footer_menu' %}
+    </footer>
+
+</body>
+
+</html>
